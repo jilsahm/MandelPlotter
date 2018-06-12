@@ -6,7 +6,7 @@ object Options{
     val MAX_Y          = 1.5
     val MIN_Y          = -1.5
     val BREAKPOINT     = 2.0
-    val MAX_ITERATIONS = 20
+    val MAX_ITERATIONS = 110
 }
 
 tailrec fun isInMandelbrot( c: Complex, z: Complex = Complex( 0.0 ), currentIteration: Int = 0 ): Boolean{
@@ -30,7 +30,7 @@ tailrec fun obtainMandelbrotDepth( c: Complex, z: Complex = Complex( 0.0 ), curr
 class Mandelbrot( var pixelsX: Int, var pixelsY: Int ){
     var stepsizeX: Double = ( Options.MAX_X + Math.abs( Options.MIN_X ) ) / this.pixelsX
     var stepsizeY: Double = ( Options.MAX_Y + Math.abs( Options.MIN_Y ) ) / this.pixelsY
-    var values: Array<Int> = Array( this.pixelsX * this.pixelsY, { i -> 0 } )
+    var values: ByteArray = ByteArray( this.pixelsX * this.pixelsY )
     init{
         this.fillCalculateValues( 0, Options.MIN_X, Options.MIN_Y )
     }
@@ -40,12 +40,16 @@ class Mandelbrot( var pixelsX: Int, var pixelsY: Int ){
             return
         }
         if ( 0 == ( index + 1 ) % this.pixelsX ){
-            this.values[index] = obtainMandelbrotDepth( Complex( Options.MIN_X, currentY + this.stepsizeY ) )
+            this.values[index] = obtainMandelbrotDepth( Complex( Options.MIN_X, currentY + this.stepsizeY ) ).toByte()
             return this.fillCalculateValues( index + 1, Options.MIN_X + this.stepsizeX, currentY + this.stepsizeY )
         } else {
-            this.values[index] = obtainMandelbrotDepth( Complex( currentX, currentY ) )
+            this.values[index] = obtainMandelbrotDepth( Complex( currentX, currentY ) ).toByte()
             return this.fillCalculateValues( index + 1, currentX + this.stepsizeX, currentY )
         }
+    }
+
+    fun getPixelValue( x: Int, y: Int ): Byte{
+        return this.values[x + this.pixelsX * y]
     }
 
     fun debugPrintValues(){
