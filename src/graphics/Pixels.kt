@@ -2,7 +2,7 @@ package graphics
 
 import javafx.scene.paint.Color
 
-class ColorSet( private val depth: Int = 1 ){
+class ColorSet( private val depth: Int = 5 ){
     private var currentRGB: Int = 0
     private var activeColor: Int = 0
     private val colorstep: Int = this.depth

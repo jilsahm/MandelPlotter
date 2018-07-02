@@ -6,7 +6,7 @@ object Options{
     val MAX_Y          = 1.5
     val MIN_Y          = -1.5
     val BREAKPOINT     = 2.0
-    val MAX_ITERATIONS = 110
+    val MAX_ITERATIONS = 125
 }
 
 tailrec fun isInMandelbrot( c: Complex, z: Complex = Complex( 0.0 ), currentIteration: Int = 0 ): Boolean{
